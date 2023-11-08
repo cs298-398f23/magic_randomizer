@@ -1,6 +1,9 @@
 # magic_randomizer
 
-Group Members: Seth Coleman
+Group Members:
+Seth Coleman
+Carl Reyes
+
 Idea: Magic Deck Randomizer
 
 - scryfall api
@@ -10,7 +13,7 @@ Idea: Magic Deck Randomizer
 
 Database
 - mongodb
-- saves passwords and 
+- saves passwords and decks
 
 Front end
 - hover over different cards to show image
