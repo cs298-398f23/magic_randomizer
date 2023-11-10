@@ -21,4 +21,4 @@ Front end
 our api
 - GET random deck
 - GET saved deck
-- POST new already random deck
+- POST past random deck
