@@ -22,3 +22,6 @@ our api
 - GET random deck
 - GET saved deck
 - POST past random deck
+
+Documentation:
+https://scryfall.com/docs/api
