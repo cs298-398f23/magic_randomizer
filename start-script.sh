@@ -15,3 +15,5 @@
 # python3 -m venv .venv
 # source .venv/bin/activate
 # pip3 install -r requirements.txt 
+
+# sudo /home/ec2-user/magic_randomizer/.venv/bin/gunicorn -w4 --bind 0.0.0.0:80 --chdir /home/ec2-user/magic_randomizer "hello:launch()"
