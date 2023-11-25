@@ -1,5 +1,7 @@
 document.getElementById("card_entry_button").addEventListener("click", function () {
-    url = "https://api.scryfall.com/cards/search?q=Rhystic%20Study";
+    let query = document.getElementById("card_entry_box").value;
+    url = `https://api.scryfall.com/cards/search?q=${query}`;
+    url = encodeURI(url)
     fetch(url)
         .then(function (response) {
             return response.json();
