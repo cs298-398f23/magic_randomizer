@@ -25,3 +25,8 @@ our api
 
 Documentation:
 https://scryfall.com/docs/api
+
+Goals for monday:
+- Mongo saves and gets a sample decklist from the test frontend
+- Basic Oauth (might want to wait for monday when coleman goes over it)
+- Running on AWS
