@@ -7,6 +7,7 @@ import json
 
 def create_app():
     app = Flask(__name__)
+    mongoClient = MongoClient("mongodb://mongo:27017")
 
     @app.route("/")
     def hello_world():
@@ -14,10 +15,9 @@ def create_app():
     
     @app.route("/save", methods=["POST"])
     def save():
-        mongoClient = MongoClient("mongodb://localhost:27017")
-
         cardList = request.data.decode("utf-8")
-        cardList = cardList.split("\n")
+        # todo: sideboards are seperated with a newline, rn it goes in as a blank card
+        cardList = cardList.strip().split("\n")
         
         json_card_list = process_card_list(cardList)
 
@@ -32,7 +32,6 @@ def create_app():
         
     @app.route("/load", methods=["GET"])
     def load():
-        mongoClient = MongoClient("mongodb://localhost:27017")
         decks = mongoClient.magic_randomizer.decks.find()
         decks = list(decks)
         
@@ -43,7 +42,6 @@ def create_app():
     def process_card_list(cardList):
         """
         Processes the card list and returns a json format of cards
-        
         """
         # TODO: Add error handling for invalid card list
         json_card_list = []
@@ -55,9 +53,9 @@ def create_app():
     
     return app
 
-def launch_app():
-    app = create_app()
-    app.run(port=8000, host="0.0.0.0", debug=True)
+def launch():
+    return create_app()
 
 if __name__ == "__main__":
-    launch_app()
+    app = launch()
+    app.run(port=8000, host="0.0.0.0", debug=True)
