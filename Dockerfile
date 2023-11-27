@@ -11,4 +11,4 @@ ADD /static ./static
 ADD /templates ./templates
 COPY hello.py .
 
-CMD [".venv/bin/gunicorn", "--bind", "0.0.0.0:80", "hello:app"]
+CMD [".venv/bin/gunicorn", "-w4", "--bind", "0.0.0.0:6070", "hello:launch()"]
