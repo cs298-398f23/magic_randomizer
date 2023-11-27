@@ -9,6 +9,6 @@ RUN .venv/bin/pip3 install -r requirements.txt
 
 ADD /static ./static
 ADD /templates ./templates
-COPY hello.py .
+COPY app.py .
 
-CMD [".venv/bin/gunicorn", "-w4", "--bind", "0.0.0.0:5000", "hello:launch()"]
+CMD [".venv/bin/gunicorn", "-w4", "--bind", "0.0.0.0:5000", "app:launch()"]

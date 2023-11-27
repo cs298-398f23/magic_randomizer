@@ -10,5 +10,6 @@ services:
       - mongo
   mongo:
     image: mongo
+    # remove this, less save
     ports:
       - "27017:27017"
