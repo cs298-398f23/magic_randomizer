@@ -5,10 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+    <textarea
+        id="deck_entry_box" type="text" placeholder="Enter deck name"
+        rows="5" cols="20">
+    </textarea>
+    <button id="deck_entry_button">Submit Deck</button>
     <input id="card_entry_box" type="text" placeholder="Enter card name">
-    <button id="card_entry_button">Submit</button>
+    <button id="card_entry_button">Find Card</button>
     <br>
     <img id="card_image" src="" alt="no card yet">
+
+    <br>
+    <button id="deck_load_button">Load All Decks</button>
+    <p id="decks">No decks yet</p>
     <script src="{{url_for('static', filename='app.js')}}"></script>
 </body>
 </html>
