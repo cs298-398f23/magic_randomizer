@@ -4,6 +4,7 @@ from pymongo.mongo_client import MongoClient
 from flask import request
 from bson import json_util
 import json
+from deck import Deck
 
 def create_app():
     app = Flask(__name__)
@@ -15,20 +16,13 @@ def create_app():
     
     @app.route("/save", methods=["POST"])
     def save():
-        cardList = request.data.decode("utf-8")
-        # todo: sideboards are seperated with a newline, rn it goes in as a blank card
-        cardList = cardList.strip().split("\n")
-        
-        json_card_list = process_card_list(cardList)
-
-        cardList = {"cards": json_card_list}
-        
+        deck = Deck(text=request.data.decode("utf-8"))
         try:
-            mongoClient.magic_randomizer.decks.insert_one(cardList) # collection.deeper_collection.insert_one(document)
+            mongoClient.magic_randomizer.decks.insert_one(deck.get_json()) # collection.deeper_collection.insert_one(document)
             return "Deck Added successfully!", 200
         except Exception as e:
             result = e
-            return "", 500
+            return str(result), 500
         
     @app.route("/load", methods=["GET"])
     def load():
