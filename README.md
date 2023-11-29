@@ -39,3 +39,5 @@ How to get Project Running on AWS
 
 Source for aws flask fix: https://stackoverflow.com/a/66688430
 
+for friday: presentation level diagram of whole system
+
