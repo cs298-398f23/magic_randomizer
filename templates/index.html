@@ -1,24 +1,60 @@
-<!-- templates/index.html -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Update Text Box</title>
-    <!-- Link to the external JavaScript file -->
-    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+    <title>Magic Deckbuilder and Randomizer</title>
 </head>
 <body>
+    <div class="container">
+        <div class="left-column">
+            <!-- Card Entry Textbox -->
+            <textarea id="card_entry_box" type="text" placeholder="Enter Quantities and Card Names&#10;Ex: 4 Delver of Secrets" rows="30" cols="45"></textarea>
+            <br>
+            <button id="card_entry_button">Add Cards to Deck</button>
 
-    <h1>Click the button to update the text box:</h1>
+            <!-- Random Deck Generator Button -->
+            <br> <br>
+            <button id="generate_random_deck_button">Generate a Random Deck</button>
 
-    <button onclick="updateTextBox()">Update Text Box</button>
+            <!-- Save / Load Deck  and List Decks-->
+            <br> <br>
+            <input id="deck_name_entry" type="text" placeholder="Enter Deck Name">
+            <br>
+            <button id="deck_save_button">Save Deck</button>
+            <button id="deck_load_button">Load Deck</button>
+            <button id="deck_list_button">List Decks</button>
+            <p id="deck_list"></p>
+        </div>
+        <div class="right-column">
+            <!-- Deck Card List -->
+            <br> <br>
+            <div id="deck_card_list_divider">
+                <button id="text_view_button">Text View</button>
+                <button id="image_view_button">Image View</button>
+                <li id="deck_card_list"></li>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
 
-    <br><br>
+<!-- Old Buttons for loading images and deck jsons -->
+<!-- 
+<br> <br>
+<p id="outputText">Initial Text</p>
+<br> <br>
+<input id="card_entry_box" type="text" placeholder="Enter card name">
+<button id="card_entry_button">Find Card</button>
+<br>
+<img id="card_image" src="" alt="no card yet" style="width: 189px;">
+<br>
+<button id="deck_load_button">Load All Decks</button>
+<p id="decks">No decks yet</p>
+-->
 
-    <label for="textBox">Text Box:</label>
-    <input type="text" id="textBox" readonly>
+<script src="{{url_for('static', filename='app.js')}}"></script>
+<link rel="stylesheet" href="{{url_for('static', filename='app.css')}}">
 
 </body>
 </html>
