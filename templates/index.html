@@ -3,36 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/static/logo.webp">
     <title>Magic Deckbuilder and Randomizer</title>
 </head>
 <body>
+    <div class="title-bar">
+        <img id="website_logo" src="static/logo.webp" style="width: 64px;">
+        <h1>Magic Deckbuilder and Randomizer</h1>
+        <img id="website_logo" src="static/logo.webp" style="width: 64px;">
+    </div>
     <div class="container">
         <div class="left-column">
-            <!-- Card Entry Textbox -->
-            <textarea id="card_entry_box" type="text" placeholder="Enter Quantities and Card Names&#10;Ex: 4 Delver of Secrets" rows="30" cols="45"></textarea>
-            <br>
-            <button id="card_entry_button">Add Cards to Deck</button>
+            <div id="left-view-1">
+                <!-- Card Entry Textbox -->
+                <textarea id="card_entry_box" type="text" placeholder="Enter Quantities and Card Names&#10;Ex: 4 Delver of Secrets" rows="30" cols="45"></textarea>
+                <br>
+                <button id="card_entry_button">Add Cards to Deck</button>
 
-            <!-- Random Deck Generator Button -->
-            <br> <br>
-            <button id="generate_random_deck_button">Generate a Random Deck</button>
+                <!-- Random Deck Generator Button -->
+                <br> <br>
+                <button id="generate_random_deck_button">Generate a Random Deck</button>
 
-            <!-- Save / Load Deck  and List Decks-->
-            <br> <br>
-            <input id="deck_name_entry" type="text" placeholder="Enter Deck Name">
-            <br>
-            <button id="deck_save_button">Save Deck</button>
-            <button id="deck_load_button">Load Deck</button>
-            <button id="deck_list_button">List Decks</button>
-            <p id="deck_list"></p>
+                <!-- Save / Load Deck  and List Decks-->
+                <br> <br>
+                <div id="buttons">
+                    <div id="buttons2">
+                        <input id="deck_name_entry" type="text" placeholder="Enter Deck Name">
+                        <br>
+                        <button id="deck_save_button">Save Deck</button>
+                        <button id="deck_load_button">Load Deck</button>
+                        <button id="deck_list_button">List Decks</button>
+                    </div>
+                </div>
+                <p id="deck_list"></p>
+            </div>
+            
         </div>
         <div class="right-column">
-            <!-- Deck Card List -->
-            <br> <br>
             <div id="deck_card_list_divider">
-                <button id="text_view_button">Text View</button>
-                <button id="image_view_button">Image View</button>
-                <li id="deck_card_list"></li>
+                <div id="right-view-1">
+                    <button id="text_view_button">Text View</button>
+                    <button id="image_view_button">Image View</button>
+                </div>
+                <br>
+                <div id="right-view-2">
+                    <li id="deck_card_list">No Cards Loaded</li>
+                    <li id="deck_image_list">No Images Loaded</li>
+                </div>
             </div>
         </div>
     </div>
@@ -41,6 +58,7 @@
 
 <!-- Old Buttons for loading images and deck jsons -->
 <!-- 
+<img id="card_image" src="" alt="no card yet" style="width: 189px;">
 <br> <br>
 <p id="outputText">Initial Text</p>
 <br> <br>

@@ -1,9 +1,13 @@
+document.getElementById("deck_card_list").hidden = false;
+document.getElementById("deck_image_list").hidden = true;
+
 document.getElementById("card_entry_button").addEventListener("click", function () {
     let cardList = document.getElementById("card_entry_box").value;
     let cardArray = cardList.split("\n");
 
-    // Clear the decklist
+    // Clear the decklist and image list
     document.getElementById("deck_card_list").innerHTML = "";
+    document.getElementById("deck_image_list").innerHTML = "";
 
     // Loop through the list of cards inside the textArea
     cardArray.forEach(function(card) {
@@ -21,14 +25,23 @@ document.getElementById("card_entry_button").addEventListener("click", function 
         }
 
         // Query the Scryfall API for the official card name and update the decklist accordingly
-        url = encodeURI(`https://api.scryfall.com/cards/search?q=${query}`);
+        url = `https://api.scryfall.com/cards/search?q=${query}`;
+        url = encodeURI(url);
         fetch(url)
             .then(function (response) {
                 return response.json();
             }).then(function (json) {
+                // Add the card image to the image view
+                let imageItem = document.createElement("img");
+                imageItem.src = json.data[0].image_uris.normal;
+                imageItem.style.width = "189px";
+                document.getElementById("deck_image_list").appendChild(imageItem);
+                // Add the card name and quantity to the text view
                 let listItem = document.createElement("li");
                 listItem.appendChild(document.createTextNode(cardQuantity + " " + json.data[0].name));
                 document.getElementById("deck_card_list").appendChild(listItem);
+
+                
             });
     });
 });
@@ -64,9 +77,11 @@ document.getElementById("deck_list_button").addEventListener("click", function (
 });
 
 document.getElementById("text_view_button").addEventListener("click", function () {
-
+    document.getElementById("deck_card_list").hidden = false;
+    document.getElementById("deck_image_list").hidden = true;
 });
 
 document.getElementById("image_view_button").addEventListener("click", function () {
-    
+    document.getElementById("deck_card_list").hidden = true;
+    document.getElementById("deck_image_list").hidden = false;
 });
