@@ -1,11 +1,15 @@
+import random
+import time
 import requests
 
 class Deck:
-    def __init__(self, text = None, json = None) -> None:
+    def __init__(self, text = None, json = None, generate=False, colors=[]) -> None:
         if text:
             self.cards = self.process_card_list(text)
         elif json:
             self.cards = json
+        elif generate:
+            self.cards = self.generate(colors)
         else:
             self.cards = []
 
@@ -22,15 +26,35 @@ class Deck:
             card = card.split(" ")
             card = {"count": card[0], "name": " ".join(card[1:])} # joins the name in case the card name has spaces
             json_card_list.append(card)
-        return {"cards": json_card_list}
+        return json_card_list
 
-    @staticmethod
-    def generate(colors):
+    def generate(self, colors, size=60, num_of_cards=[4]):
         """
         Generates a deck based on the settings given
         :param: colors, a list of colors to generate the deck with
         """
-        pass
+        cards = []
+
+        land_types = {
+            "W": "Plains",
+            "U": "Island",
+            "B": "Swamp",
+            "R": "Mountain",
+            "G": "Forest"
+        }
+        
+        num_of_lands = size // 3
+        num_of_each_land = num_of_lands // len(colors)
+        for color in colors:
+            cards.append({"name": land_types[color], "count": num_of_each_land})
+
+        # TODO: make this work for random card counts
+        for _ in range((size - num_of_lands) // 4):
+            card = self.generate_card(random.choice(colors))
+            time.sleep(0.075)
+            cards.append({"name": card["name"], "count": 4})
+
+        return cards
 
     def generate_card(self, color):
         """
@@ -39,19 +63,22 @@ class Deck:
         """
         #TODO: make the colors actually work
         url = "https://api.scryfall.com/cards/random"
-        query= {"q": fr'o:"{color}" OR m:{color}'}
+        query= {"q": fr'o:"{{{color}}}" OR m:{{{color}}}'}
         return requests.get(url, params=query).json()
 
     def get_json(self) -> dict:
         """
         Returns a json representation of the deck
         """
-        return self.cards
-    
-    def get_images() -> dict:
+        return {"cards": self.cards}
+
+    def __str__(self) -> str:
         """
-        Returns a dict of images for the deck, the key is the card name and the value is the url of the image
+        Returns a string representation of the deck
         """
-        pass
+        decklist = ""
+        for card in self.cards["cards"]:
+            decklist += f"{card['count']} {card['name']}\n"
+        return decklist.strip()
 
     
