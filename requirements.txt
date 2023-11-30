@@ -2,3 +2,4 @@ flask
 gunicorn
 pymongo
 pytest
+requests

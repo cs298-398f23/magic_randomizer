@@ -1,3 +1,5 @@
+import requests
+
 class Deck:
     def __init__(self, text = None, json = None) -> None:
         if text:
@@ -23,11 +25,22 @@ class Deck:
         return {"cards": json_card_list}
 
     @staticmethod
-    def generate(settings):
+    def generate(colors):
         """
         Generates a deck based on the settings given
+        :param: colors, a list of colors to generate the deck with
         """
         pass
+
+    def generate_card(self, color):
+        """
+        Generates a card based on the settings given
+        :param: colors, a list of colors to generate the card with
+        """
+        #TODO: make the colors actually work
+        url = "https://api.scryfall.com/cards/random"
+        query= {"q": fr'o:"{color}" OR m:{color}'}
+        return requests.get(url, params=query).json()
 
     def get_json(self) -> dict:
         """
