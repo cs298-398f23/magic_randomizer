@@ -32,24 +32,8 @@ def create_app():
         data = {"decks": decks}
         data = json.loads(json_util.dumps(data))
         return data, 200
-
-    def process_card_list(cardList):
-        """
-        Processes the card list and returns a json format of cards
-        """
-        # TODO: Add error handling for invalid card list
-        json_card_list = []
-        for card in cardList:
-            card = card.split(" ")
-            card = {"count": card[0], "name": " ".join(card[1:])} # joins the name in case the card name has spaces
-            json_card_list.append(card)
-        return json_card_list
     
     return app
 
 def launch():
     return create_app()
-
-if __name__ == "__main__":
-    app = launch()
-    app.run(port=8000, host="0.0.0.0", debug=True)
