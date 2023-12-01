@@ -33,3 +33,12 @@ document.getElementById("deck_load_button").addEventListener("click", function (
         document.getElementById("decks").textContent = JSON.stringify(json);
     });
 });
+
+document.getElementById("random_button").addEventListener("click", function () {
+    fetch("/random?colors=W,B")
+    .then(function (response) {
+        return response.text();
+    }).then(function (body) {
+        document.getElementById("random").textContent = body;
+    });
+});

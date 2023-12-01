@@ -33,6 +33,11 @@ def create_app():
         data = json.loads(json_util.dumps(data))
         return data, 200
     
+    @app.route("/random",methods=["GET"])
+    def random():
+        deck = Deck(generate=True, colors=request.args.get("colors").split(","))
+        return str(deck), 200
+    
     return app
 
 def launch():
