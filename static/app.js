@@ -47,6 +47,14 @@ document.getElementById("card_entry_button").addEventListener("click", function 
 });
 
 document.getElementById("generate_random_deck_button").addEventListener("click", function () {
+    // only fetches white and black cards for now
+    document.getElementById("card_entry_box").value = "fetching...";
+    fetch("/random?colors=W,B")
+    .then(function (response) {
+        return response.text();
+    }).then(function (body) {
+        document.getElementById("card_entry_box").value = body;
+    });
 });
 
 document.getElementById("deck_save_button").addEventListener("click", function () {
