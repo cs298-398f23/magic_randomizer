@@ -43,3 +43,7 @@ def test_generate_deck_multiple_colors():
     assert deck.cards[1]["count"] == 10
 
     assert deck.cards[2]["count"] == 4
+
+def test_throws_on_no_colors():
+    with pytest.raises(Exception):
+        deck = Deck(generate=True)

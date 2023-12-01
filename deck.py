@@ -28,11 +28,14 @@ class Deck:
             json_card_list.append(card)
         return json_card_list
 
-    def generate(self, colors, size=60, num_of_cards=[4]):
+    def generate(self, colors=[], size=60, num_of_cards=[4]):
         """
         Generates a deck based on the settings given
         :param: colors, a list of colors to generate the deck with
         """
+        if colors == []:
+            raise Exception("No colors given")
+       
         cards = []
 
         land_types = {
@@ -77,7 +80,7 @@ class Deck:
         Returns a string representation of the deck
         """
         decklist = ""
-        for card in self.cards["cards"]:
+        for card in self.cards:
             decklist += f"{card['count']} {card['name']}\n"
         return decklist.strip()
 
