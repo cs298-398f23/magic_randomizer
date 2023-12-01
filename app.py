@@ -12,29 +12,29 @@ def create_app():
     @app.route("/")
     def hello_world():
         return render_template("index.html")
-    
+
     @app.route("/save", methods=["POST"])
     def save():
         cardList = request.data.decode("utf-8")
         # todo: sideboards are seperated with a newline, rn it goes in as a blank card
         cardList = cardList.strip().split("\n")
-        
+
         json_card_list = process_card_list(cardList)
 
         cardList = {"cards": json_card_list}
-        
+
         try:
             mongoClient.magic_randomizer.decks.insert_one(cardList) # collection.deeper_collection.insert_one(document)
             return "Deck Added successfully!", 200
         except Exception as e:
             result = e
             return "", 500
-        
+
     @app.route("/load", methods=["GET"])
     def load():
         decks = mongoClient.magic_randomizer.decks.find()
         decks = list(decks)
-        
+
         data = {"decks": decks}
         data = json.loads(json_util.dumps(data))
         return data, 200
@@ -58,7 +58,7 @@ def create_app():
         for card in json_card_list:
             print(card["count"], card["name"])
         print()
-    
+
     return app
 
 def launch():

@@ -14,7 +14,7 @@ document.getElementById("card_entry_button").addEventListener("click", function 
         cardLine = card.split(" ");
         let cardQuantity = 0;
         let cardName = "";
-        
+
         // Check if the line begins with a quantity, otherwise assume a quantity of 1
         if (parseInt(cardLine[0])) {
             cardQuantity = parseInt(cardLine[0]);
@@ -41,7 +41,7 @@ document.getElementById("card_entry_button").addEventListener("click", function 
                 listItem.appendChild(document.createTextNode(cardQuantity + " " + json.data[0].name));
                 document.getElementById("deck_card_list").appendChild(listItem);
 
-                
+
             });
     });
 });
@@ -65,9 +65,6 @@ document.getElementById("deck_save_button").addEventListener("click", function (
 });
 
 document.getElementById("deck_load_button").addEventListener("click", function () {
-});
-
-document.getElementById("deck_list_button").addEventListener("click", function () {
     fetch("/load")
     .then(function (response) {
         return response.json();
