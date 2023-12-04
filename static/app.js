@@ -48,7 +48,10 @@ document.getElementById("card_entry_button").addEventListener("click", function 
 
 document.getElementById("generate_random_deck_button").addEventListener("click", function () {
     // only fetches white and black cards for now
-    document.getElementById("card_entry_box").value = "fetching...";
+    let card_entry_box = document.getElementById("card_entry_box")
+    card_entry_box.value = "";
+    card_entry_box.placeholder = "fetching...";
+    
     fetch("/random?colors=W,B")
     .then(function (response) {
         return response.text();
