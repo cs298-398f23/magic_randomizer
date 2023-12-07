@@ -59,17 +59,12 @@ document.getElementById("card_entry_button").addEventListener("click", function 
             }
         });
     });
-
-    if (document.getElementById("deck_card_list").innerHTML === "") {
-        document.getElementById("deck_card_list").innerHTML = "No Cards Loaded";
-    }
-    if (document.getElementById("deck_image_list").innerHTML === "") {
-        document.getElementById("deck_image_list").innerHTML = "No Images Loaded";
-    }
 });
 
 document.getElementById("generate_random_deck_button").addEventListener("click", function () {
     // only fetches white and black cards for now
+    /* Old code below
+
     document.getElementById("card_entry_box").value = "fetching...";
     fetch("/random?colors=W,B")
     .then(function (response) {
@@ -77,6 +72,47 @@ document.getElementById("generate_random_deck_button").addEventListener("click",
     }).then(function (body) {
         document.getElementById("card_entry_box").value = body;
     });
+    */
+
+
+    document.getElementById("card_entry_box").value = "fetching...";
+
+    // Fetch the list of all card names from the Scryfall API
+    // TODO: CACHE THIS LIST SOMEWHERE SO WE DONT HAVE TO CALL MULTIPLE TIMES FOR IT
+    fetch("https://api.scryfall.com/catalog/card-names")
+    .then(function (response) {
+        return response.json();
+    })
+    .then(function (json) {
+        let cardNames = json.data;
+        let cardList = "";
+        // Generate a random decklist of 40 cards
+        // TODO: CHECK IF THE CARD IS ALREADY IN THE LIST AND UPDATE QUANTITY INSTEAD OF ADDING A NEW LINE
+        for (let i = 0; i < 40; i++) {
+            let randomIndex = Math.floor(Math.random() * cardNames.length);
+            // Add a new line after each card except the last one to prevent an extra blank line
+            if (i !== 40) {
+                // Get another card if it's already in the list
+                while (cardList.includes(cardNames[randomIndex])) {
+                    randomIndex = Math.floor(Math.random() * cardNames.length);
+                }
+                cardList += "1 " + cardNames[randomIndex] + "\n";
+            } else {
+                //cardList += "1 " + cardNames[randomIndex];
+            }
+        }
+
+        //TODO:Mana Curve possibly
+        cardList += "4 Plains\n";
+        cardList += "4 Island\n";
+        cardList += "4 Swamp\n";
+        cardList += "4 Mountain\n";
+        cardList += "4 Forest";
+
+        // Add the complete decklist to the textArea
+        document.getElementById("card_entry_box").value = cardList;
+    });
+
 });
 
 document.getElementById("deck_save_button").addEventListener("click", function () {
