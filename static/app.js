@@ -5,7 +5,6 @@ document.getElementById("card_entry_button").addEventListener("click", function 
     let cardList = document.getElementById("card_entry_box").value;
     let cardArray = cardList.split("\n");
 
-    // Clear the decklist and image list
     document.getElementById("deck_card_list").innerHTML = "";
     document.getElementById("deck_image_list").innerHTML = "";
 
@@ -27,17 +26,16 @@ document.getElementById("card_entry_button").addEventListener("click", function 
         // Replace spaces in query with '+'
         query = cardName.replace(/ /g, "+");
 
-        
-
         // Query the Scryfall API for the official card name and update the decklist accordingly
         url = `https://api.scryfall.com/cards/named?fuzzy=${query}`;
         // url = encodeURI(url);
         fetch(url)
         .then(response => {
             if(!response.ok) {
+                alert("Error: Card not found: \"" + cardName + "\"");
                 throw Error(response.status);
-
             }
+            //alert(response.status);
             return response.json();
         })
         .then(function (json) {
@@ -61,6 +59,13 @@ document.getElementById("card_entry_button").addEventListener("click", function 
             }
         });
     });
+
+    if (document.getElementById("deck_card_list").innerHTML === "") {
+        document.getElementById("deck_card_list").innerHTML = "No Cards Loaded";
+    }
+    if (document.getElementById("deck_image_list").innerHTML === "") {
+        document.getElementById("deck_image_list").innerHTML = "No Images Loaded";
+    }
 });
 
 document.getElementById("generate_random_deck_button").addEventListener("click", function () {
