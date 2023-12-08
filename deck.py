@@ -3,7 +3,9 @@ import time
 import requests
 
 class Deck:
-    def __init__(self, text = None, json = None, generate=False, colors=[]) -> None:
+    def __init__(self, name, text = None, json = None, generate=False, colors=[]) -> None:
+        self.name = name
+        
         if text:
             self.cards = self.process_card_list(text)
         elif json:
@@ -73,7 +75,7 @@ class Deck:
         """
         Returns a json representation of the deck
         """
-        return {"cards": self.cards}
+        return {"name": self.name, "cards": self.cards, "deck_list": str(self)}
 
     def __str__(self) -> str:
         """

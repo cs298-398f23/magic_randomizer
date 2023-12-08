@@ -11,13 +11,19 @@ def create_app():
     mongoClient = MongoClient("mongodb://mongo:27017")
 
     @app.route("/")
-    def hello_world():
+    def index():
         return render_template("index.html")
 
     @app.route("/save", methods=["POST"])
     def save():
-        deck = Deck(text=request.data.decode("utf-8"))
+        data = request.get_data().decode("utf-8")
+        data = json.loads(data)
+        deck = Deck(data["name"], text=data["deck_list"])
         try:
+            possible_duplicates = json.loads(json_util.dumps(mongoClient.magic_randomizer.decks.find({"name": deck.name})))
+            if len(possible_duplicates) > 0:
+                return "Deck already exists!", 400
+            
             mongoClient.magic_randomizer.decks.insert_one(deck.get_json()) # collection.deeper_collection.insert_one(document)
             return "Deck Added successfully!", 200
         except Exception as e:
@@ -26,11 +32,9 @@ def create_app():
 
     @app.route("/load", methods=["GET"])
     def load():
-        decks = mongoClient.magic_randomizer.decks.find()
-        decks = list(decks)
+        deck = mongoClient.magic_randomizer.decks.find({"name": request.args.get("name")})
 
-        data = {"decks": decks}
-        data = json.loads(json_util.dumps(data))
+        data = json.loads(json_util.dumps(deck))
         return data, 200
 
     @app.route("/random",methods=["GET"])

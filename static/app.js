@@ -48,7 +48,10 @@ document.getElementById("card_entry_button").addEventListener("click", function 
 
 document.getElementById("generate_random_deck_button").addEventListener("click", function () {
     // only fetches white and black cards for now
-    document.getElementById("card_entry_box").value = "fetching...";
+    let card_entry_box = document.getElementById("card_entry_box")
+    card_entry_box.value = "";
+    card_entry_box.placeholder = "fetching...";
+    
     fetch("/random?colors=W,B")
     .then(function (response) {
         return response.text();
@@ -58,26 +61,26 @@ document.getElementById("generate_random_deck_button").addEventListener("click",
 });
 
 document.getElementById("deck_save_button").addEventListener("click", function () {
-    let body = document.getElementById("card_entry_box").value;
-    fetch("/save", {body, method: "POST"})
+    let body = JSON.stringify({'name': document.getElementById("deck_name_entry").value, 'deck_list': document.getElementById("card_entry_box").value});
+    console.log(body);
+    fetch("/save", {body, method: "POST", headers: {"Content-Type": "application/json"}})
     .then(function (response) {
         return response;
     }).then(function (response) {
-        if (response.status === 200) {
-            document.getElementById("deck_entry_button").style.backgroundColor = "green";
-        } else {
-            console.log(response);
-            document.getElementById("deck_entry_button").style.backgroundColor = "red";
+        if (response.status === 400) {
+            alert("Deck name already exists!");
         }
     });
 });
 
 document.getElementById("deck_load_button").addEventListener("click", function () {
-    fetch("/load")
+    let name = document.getElementById("deck_name_entry").value;
+    fetch(`/load?name=${name}`)
     .then(function (response) {
         return response.json();
     }).then(function (json) {
-        document.getElementById("deck_list").textContent = JSON.stringify(json);
+        console.log(json);
+        document.getElementById("card_entry_box").value = json[0].deck_list;
     });
 });
 
