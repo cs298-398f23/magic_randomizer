@@ -5,7 +5,6 @@ document.getElementById("card_entry_button").addEventListener("click", function 
     let cardList = document.getElementById("card_entry_box").value;
     let cardArray = cardList.split("\n");
 
-    // Clear the decklist and image list
     document.getElementById("deck_card_list").innerHTML = "";
     document.getElementById("deck_image_list").innerHTML = "";
 
@@ -24,26 +23,37 @@ document.getElementById("card_entry_button").addEventListener("click", function 
             query = card;
         }
 
+        // Replace spaces in query with '+'
+        query = cardName.replace(/ /g, "+");
+
         // Query the Scryfall API for the official card name and update the decklist accordingly
         url = `https://api.scryfall.com/cards/search?q=${query}`;
         url = encodeURI(url);
         fetch(url)
-            .then(function (response) {
-                return response.json();
-            }).then(function (json) {
-                // Add the card image to the image view
-                let imageItem = document.createElement("img");
-                imageItem.src = json.data[0].image_uris.normal;
-                imageItem.style.width = "189px";
-                document.getElementById("deck_image_list").appendChild(imageItem);
-                // Add the card name and quantity to the text view
-                let listItem = document.createElement("li");
-                listItem.appendChild(document.createTextNode(cardQuantity + " " + json.data[0].name));
-                document.getElementById("deck_card_list").appendChild(listItem);
+        .then(response => {
+            if(!response.ok) {
+                alert("Error: Card not found: \"" + cardName + "\"");
+                throw Error(response.status);
+            }
+            //alert(response.status);
+            return response.json();
+        })
+        .then(function (json) {
+            // Create a new list item for each card
+            let listItem = document.createElement("li");
+            listItem.textContent = `${cardQuantity} ${json.name}`;
+            document.getElementById("deck_card_list").appendChild(listItem);
 
 
             });
     });
+
+    if (document.getElementById("deck_card_list").innerHTML === "") {
+        document.getElementById("deck_card_list").innerHTML = "No Cards Loaded";
+    }
+    if (document.getElementById("deck_image_list").innerHTML === "") {
+        document.getElementById("deck_image_list").innerHTML = "No Images Loaded";
+    }
 });
 
 document.getElementById("generate_random_deck_button").addEventListener("click", function () {
