@@ -11,7 +11,7 @@ class Deck:
         elif json:
             self.cards = json
         elif generate:
-            self.cards = self.generate(colors)
+            self.cards = self.generate()
         else:
             self.cards = []
 
@@ -30,15 +30,14 @@ class Deck:
             json_card_list.append(card)
         return json_card_list
 
-    def generate(self, colors=[], size=60, num_of_cards=[4]):
+    def generate(self, size=60, num_of_cards=[4]):
         """
         Generates a deck based on the settings given
         :param: colors, a list of colors to generate the deck with
         """
-        if colors == []:
-            raise Exception("No colors given")
-       
         cards = []
+        colors = ["W", "U", "B", "R", "G"]
+        card_names = requests.get('https://api.scryfall.com/catalog/card-names').json()["data"]
 
         land_types = {
             "W": "Plains",
@@ -55,13 +54,12 @@ class Deck:
 
         # TODO: make this work for random card counts
         for _ in range((size - num_of_lands) // 4):
-            card = self.generate_card(random.choice(colors))
-            time.sleep(0.075)
-            cards.append({"name": card["name"], "count": 4})
+            card = random.choice(card_names)
+            cards.append({"name": card, "count": 4})
 
         return cards
 
-    def generate_card(self, color):
+    def generate_card(self, card_names):
         """
         Generates a card based on the settings given
         :param: colors, a list of colors to generate the card with
