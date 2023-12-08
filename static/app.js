@@ -17,18 +17,18 @@ document.getElementById("card_entry_button").addEventListener("click", function 
         // Check if the line begins with a quantity, otherwise assume a quantity of 1
         if (parseInt(cardLine[0])) {
             cardQuantity = parseInt(cardLine[0]);
-            query = cardLine.slice(1).join(" ");
+            cardName = cardLine.slice(1).join(" ");
         } else {
             cardQuantity = 1;
-            query = card;
+            cardName = card;
         }
 
         // Replace spaces in query with '+'
         query = cardName.replace(/ /g, "+");
 
         // Query the Scryfall API for the official card name and update the decklist accordingly
-        url = `https://api.scryfall.com/cards/search?q=${query}`;
-        url = encodeURI(url);
+        url = `https://api.scryfall.com/cards/named?fuzzy=${query}`;
+        // url = encodeURI(url);
         fetch(url)
         .then(response => {
             if(!response.ok) {
@@ -44,16 +44,21 @@ document.getElementById("card_entry_button").addEventListener("click", function 
             listItem.textContent = `${cardQuantity} ${json.name}`;
             document.getElementById("deck_card_list").appendChild(listItem);
 
-
-            });
+            // Create a new image for each card
+            for (let i = 0; i < cardQuantity; i++) {
+                let image = document.createElement("img");
+                if (json.layout != "normal") {
+                    image.src = json.card_faces[0].image_uris.normal;
+                } else {
+                    image.src = json.image_uris.normal;
+                }
+                image.alt = json.name;
+                image.title = json.name;
+                image.style = "width: 189px; margin: 5px;";
+                document.getElementById("deck_image_list").appendChild(image);
+            }
+        });
     });
-
-    if (document.getElementById("deck_card_list").innerHTML === "") {
-        document.getElementById("deck_card_list").innerHTML = "No Cards Loaded";
-    }
-    if (document.getElementById("deck_image_list").innerHTML === "") {
-        document.getElementById("deck_image_list").innerHTML = "No Images Loaded";
-    }
 });
 
 document.getElementById("generate_random_deck_button").addEventListener("click", function () {
@@ -102,4 +107,29 @@ document.getElementById("text_view_button").addEventListener("click", function (
 document.getElementById("image_view_button").addEventListener("click", function () {
     document.getElementById("deck_card_list").hidden = true;
     document.getElementById("deck_image_list").hidden = false;
+});
+
+document.getElementById("login_button").addEventListener("click", function () {
+    let username = document.getElementById("username_entry").value;
+    let password = document.getElementById("password_entry").value;
+
+    fetch("/login", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
+    })
+    .then(function (response) {
+        return response;
+    }).then(function (response) {
+        if (response.status === 200) {
+            document.getElementById("login_button").style.backgroundColor = "green";
+            //alert("Login successful as " + response.username);
+        } else {
+            console.log(response);
+            document.getElementById("login_button").style.backgroundColor = "red";
+            alert("Invalid username or password");
+        }
+    });
 });
