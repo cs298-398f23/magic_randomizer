@@ -11,5 +11,6 @@ ADD /static ./static
 ADD /templates ./templates
 COPY app.py .
 COPY deck.py .
+COPY config.py .
 
 CMD [".venv/bin/gunicorn", "-w4", "--bind", "0.0.0.0:5000", "app:launch()"]
