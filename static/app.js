@@ -45,18 +45,16 @@ document.getElementById("card_entry_button").addEventListener("click", function 
             document.getElementById("deck_card_list").appendChild(listItem);
 
             // Create a new image for each card
-            for (let i = 0; i < cardQuantity; i++) {
-                let image = document.createElement("img");
-                if (json.layout != "normal") {
-                    image.src = json.card_faces[0].image_uris.normal;
-                } else {
-                    image.src = json.image_uris.normal;
-                }
-                image.alt = json.name;
-                image.title = json.name;
-                image.style = "width: 189px; margin: 5px;";
-                document.getElementById("deck_image_list").appendChild(image);
+            let image = document.createElement("img");
+            if (json.layout != "normal") {
+                image.src = json.card_faces[0].image_uris.normal;
+            } else {
+                image.src = json.image_uris.normal;
             }
+            image.alt = json.name;
+            image.title = json.name;
+            image.style = "width: 189px; margin: 5px;";
+            document.getElementById("deck_image_list").appendChild(image);
         });
     });
 });
@@ -67,7 +65,7 @@ document.getElementById("generate_random_deck_button").addEventListener("click",
     card_entry_box.value = "";
     card_entry_box.placeholder = "fetching...";
     
-    fetch("/random?colors=W,B")
+    fetch("/random")
     .then(function (response) {
         return response.text();
     }).then(function (body) {
