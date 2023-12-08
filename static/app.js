@@ -17,18 +17,18 @@ document.getElementById("card_entry_button").addEventListener("click", function 
         // Check if the line begins with a quantity, otherwise assume a quantity of 1
         if (parseInt(cardLine[0])) {
             cardQuantity = parseInt(cardLine[0]);
-            cardName = cardLine.slice(1).join(" ");
+            query = cardLine.slice(1).join(" ");
         } else {
             cardQuantity = 1;
-            cardName = card;
+            query = card;
         }
 
         // Replace spaces in query with '+'
         query = cardName.replace(/ /g, "+");
 
         // Query the Scryfall API for the official card name and update the decklist accordingly
-        url = `https://api.scryfall.com/cards/named?fuzzy=${query}`;
-        // url = encodeURI(url);
+        url = `https://api.scryfall.com/cards/search?q=${query}`;
+        url = encodeURI(url);
         fetch(url)
         .then(response => {
             if(!response.ok) {
@@ -44,20 +44,8 @@ document.getElementById("card_entry_button").addEventListener("click", function 
             listItem.textContent = `${cardQuantity} ${json.name}`;
             document.getElementById("deck_card_list").appendChild(listItem);
 
-            // Create a new image for each card
-            for (let i = 0; i < cardQuantity; i++) {
-                let image = document.createElement("img");
-                if (json.layout != "normal") {
-                    image.src = json.card_faces[0].image_uris.normal;
-                } else {
-                    image.src = json.image_uris.normal;
-                }
-                image.alt = json.name;
-                image.title = json.name;
-                image.style = "width: 189px; margin: 5px;";
-                document.getElementById("deck_image_list").appendChild(image);
-            }
-        });
+
+            });
     });
 
     if (document.getElementById("deck_card_list").innerHTML === "") {
