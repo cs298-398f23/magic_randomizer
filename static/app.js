@@ -67,10 +67,8 @@ document.getElementById("deck_save_button").addEventListener("click", function (
     .then(function (response) {
         return response;
     }).then(function (response) {
-        if (response.status !== 200) {
-            document.getElementById("deck_save_button").style.backgroundColor = "red";
-        } else {
-            console.log(response);
+        if (response.status === 400) {
+            alert("Deck name already exists!");
         }
     });
 });

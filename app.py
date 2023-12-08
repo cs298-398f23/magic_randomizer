@@ -20,7 +20,10 @@ def create_app():
         data = json.loads(data)
         deck = Deck(data["name"], text=data["deck_list"])
         try:
-            # TODO: add check for duplicate name
+            possible_duplicates = json.loads(json_util.dumps(mongoClient.magic_randomizer.decks.find({"name": deck.name})))
+            if len(possible_duplicates) > 0:
+                return "Deck already exists!", 400
+            
             mongoClient.magic_randomizer.decks.insert_one(deck.get_json()) # collection.deeper_collection.insert_one(document)
             return "Deck Added successfully!", 200
         except Exception as e:
