@@ -3,3 +3,4 @@ gunicorn
 pymongo
 pytest
 requests
+flask-login
