@@ -15,6 +15,8 @@ def create_app():
 
     mongoClient = MongoClient("mongodb://mongo:27017")
 
+    # Bruh, we can't store passwords in plaintext
+    # and the login system is not even used
     users = {'admin': {'password': 'admin'}}
 
     class User(UserMixin):
@@ -52,7 +54,7 @@ def create_app():
 
     @app.route("/random",methods=["GET"])
     def random():
-        deck = Deck(generate=True, colors=request.args.get("colors").split(","))
+        deck = Deck("random", generate=True)
         return str(deck), 200
     
     @login_manager.user_loader
